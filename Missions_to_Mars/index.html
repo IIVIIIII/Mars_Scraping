@@ -16,7 +16,16 @@
 
 <body>
 
-
+  <div class="container-fluid">
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+    </div>
+    <img src="{{ vacation.sloth_img }}" alt="Sloth">
+    <h2>Headline is:</h2>
+    <h3>Headline: {{ vacation.news_H }}</h3>
+    <h3>Subtext: {{ vacation.news_P}}</h3>
+  </div>
 
 </body>
 

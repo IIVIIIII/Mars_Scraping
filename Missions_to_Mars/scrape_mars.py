@@ -62,7 +62,7 @@ def scrape_info():
         props.append(col1[x].text)
         stats.append(col2[x].text)
         
-    fax_df = pd.DataFrame({"Description": props, "Mars": stats}).set_index('Description')
+    fax_table = pd.DataFrame({"Description": props, "Mars": stats}).set_index('Description').to_html()
 
 
 
@@ -97,19 +97,39 @@ def scrape_info():
             img_urls.append(soup.find_all('a')[4]['href'])
             print("1 " + jump)
         except:
-            browser.links.find_by_partial_text('2').click()
-            browser.links.find_by_partial_text(jump).click()
-            html = browser.html
-            soup = bs(html, 'html.parser')
-            titles.append(soup.find_all('h2')[0].text.replace(" Enhanced", ""))
-            img_urls.append(soup.find_all('a')[4]['href'])
-            print("2 " + jump)
+            try:
+                browser.links.find_by_partial_text('2').click()
+                browser.links.find_by_partial_text(jump).click()
+                html = browser.html
+                soup = bs(html, 'html.parser')
+                titles.append(soup.find_all('h2')[0].text.replace(" Enhanced", ""))
+                img_urls.append(soup.find_all('a')[4]['href'])
+                print("2 " + jump)
+            except:
+                browser.links.find_by_partial_text('1').click()
+                browser.links.find_by_partial_text(jump).click()
+                html = browser.html
+                soup = bs(html, 'html.parser')
+                titles.append(soup.find_all('h2')[0].text.replace(" Enhanced", ""))
+                img_urls.append(soup.find_all('a')[4]['href'])
+                print("1 " + jump)
 
     # Quit the browser
     browser.quit()
 
     # Set results to list of dictionaries
     for x in range(0, len(img_urls)):
-        hemisphere_urls.append({"title": titles[x], "img_url": img_url[x]})
+        hemisphere_urls.append({"title": titles[x], "img_url": img_urls[x]})
 
+
+
+    mars = {"news_H": news_H,
+            "news_P": news_P,
+            "featured_image_url": featured_image_url,
+            "fax_table": fax_table,
+            "hemisphere_urls": hemisphere_urls}
+
+
+
+    return mars
 
